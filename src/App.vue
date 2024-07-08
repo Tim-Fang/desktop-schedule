@@ -1,43 +1,34 @@
+<template>
+  <n-config-provider :theme="theme">
+    <dapp v-model:theme_str="theme_str" />
+    <n-global-style />
+  </n-config-provider>
+</template>
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import { NButton } from 'naive-ui'
+import dapp from './components/HelloWorld.vue'
 import { invoke } from '@tauri-apps/api'
+import { darkTheme } from 'naive-ui'
+import { ref, watch } from 'vue'
 
-// now we can call our Command!
-// Right-click the application background and open the developer tools.
-// You will see "Hello, World!" printed in the console!
-invoke('greet', { name: 'World' })
-  // `invoke` returns a Promise
-  .then((response) => console.log(response))
+// // now we can call our Command!
+// // Right-click the application background and open the developer tools.
+// // You will see "Hello, World!" printed in the console!
+// invoke('greet', { name: 'World' })
+//   // `invoke` returns a Promise
+//   .then((response) => console.log(response))
+const theme = ref(null)
+const theme_str = ref('light')
+watch(theme_str, async (val) => {
+  if (val == 'light') {
+    theme.value = null
+  } else if (val == 'dark') {
+    theme.value = darkTheme
+  }
+})
 </script>
 
-<template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-    <n-button strong secondary type="primary">naive-ui</n-button>
-
-  <HelloWorld msg="Vite + Vue" />
-</template>
-
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+<style>
+html {
+  background-color: rgba(0, 0, 0, 0.15);
 }
 </style>
